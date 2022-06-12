@@ -1,10 +1,7 @@
 import express from "express";
 import { createServer } from "http";
 import { Server } from "socket.io";
-import { config } from "dotenv";
 import { onConnection } from "./lib/onConnection";
-
-config();
 
 (async () => {
   const app = express();

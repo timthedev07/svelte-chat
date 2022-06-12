@@ -36,7 +36,7 @@
   {#each messages as message}
     <li
       class={`m-2 rounded-lg bg-slate-500/10 border-2 border-slate-400/50 py-2 px-7 ${
-        message.type === "notice" ? "text-opacity-70" : "text-opacity-100"
+        message.type === "notice" ? "text-white/70 italic" : "text-white"
       }`}
     >
       {message.message}

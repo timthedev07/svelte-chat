@@ -29,6 +29,7 @@
 	},
 	"type": "module",
 	"dependencies": {
+		"@rollup/plugin-typescript": "^8.3.3",
 		"sk-auth": "^0.4.1",
 		"socket.io-client": "^4.5.1"
 	}

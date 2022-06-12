@@ -1,9 +1,9 @@
 import { Socket, Server } from "socket.io";
+import { getNotice } from "../helper/getNotice";
 import { getTimestampStr } from "../helper/getTimestampStr";
 import { loadMessages } from "../mongodb/functions/loadMessages";
 import { newMessage } from "../mongodb/functions/newMessage";
 import { ChatMessage } from "../mongodb/models/ChatMessage";
-import { WithMessageType } from "../types";
 
 const handler = (socket: Socket, ioServer: Server) => {
   console.log("new client");
@@ -21,13 +21,12 @@ const handler = (socket: Socket, ioServer: Server) => {
       socket.emit("loadMessages", existingMessages);
 
       // notice message
-      socket.broadcast.to(roomId).emit("message", {
-        message: `user<${userId}> has joined the room`,
-        roomId: roomId,
-        senderAuthId: "~",
-        timeStamp: getTimestampStr(),
-        type: "notice",
-      } as WithMessageType<ChatMessage>);
+      socket.broadcast
+        .to(roomId)
+        .emit(
+          "message",
+          getNotice(`user<${userId}> has joined the room`, roomId)
+        );
 
       socket.on("message", (message: string) => {
         const messageObj = {
@@ -43,6 +42,15 @@ const handler = (socket: Socket, ioServer: Server) => {
         });
 
         newMessage(messageObj);
+      });
+
+      socket.on("disconnect", () => {
+        ioServer
+          .to(roomId)
+          .emit(
+            "message",
+            getNotice(`user<${userId}> has left the room`, roomId)
+          );
       });
     }
   );

@@ -1,19 +1,25 @@
 <script lang="ts">
   import { io } from "../lib/socket";
   import { onMount } from "svelte";
-  import type { Message } from "../types";
 
-  let messages: Message[] = [];
+  let messages: any[] = [];
   let draft: string;
 
   onMount(() => {
-    io.on("message", (message) => {
-      // Listen to the message event
-      messages = [...messages, message];
+    // join public room
+    io.emit("joinRoom", {
+      roomId: "public",
+      userId: "hard-coded",
     });
-    io.on("name", (name) => {
-      // Another listener for the name:
-      // username = name // Update the name so it can be displayed
+
+    // load any existing messages
+    io.on("loadMessages", (newMessages) => {
+      messages = [...messages, ...newMessages];
+    });
+
+    // new message
+    io.on("message", (message) => {
+      messages = [...messages, message];
     });
   });
 
@@ -28,7 +34,11 @@
 
 <ul>
   {#each messages as message}
-    <li>
+    <li
+      class={`m-2 rounded-lg bg-slate-500/10 border-2 border-slate-400/50 py-2 px-7 ${
+        message.type === "notice" ? "text-opacity-70" : "text-opacity-100"
+      }`}
+    >
       {message.message}
     </li>
   {/each}

@@ -5,6 +5,7 @@ export class ChatMessage {
     public senderAuthId: string,
     public message: string,
     public timeStamp: string,
+    public roomId: string,
     public id?: ObjectId
   ) {}
 }

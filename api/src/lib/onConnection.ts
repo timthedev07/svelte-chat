@@ -11,6 +11,7 @@ const handler = (socket: Socket, ioServer: Server) => {
       senderAuthId: "abcdefg12345",
       message,
       timeStamp: new Date().toLocaleString(),
+      roomId: "qwerty",
     } as ChatMessage;
 
     ioServer.emit("message", messageObj);

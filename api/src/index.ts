@@ -1,7 +1,9 @@
+import "dotenv/config";
 import express from "express";
 import { createServer } from "http";
 import { Server } from "socket.io";
 import { onConnection } from "./lib/onConnection";
+import { connectDB } from "./mongodb";
 
 (async () => {
   const app = express();
@@ -17,6 +19,8 @@ import { onConnection } from "./lib/onConnection";
   http.listen(PORT, () => {
     console.log(`listening on http://localhost:${PORT}`);
   });
+
+  await connectDB();
 
   ioServer.on("connection", onConnection(ioServer));
 })();

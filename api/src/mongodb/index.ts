@@ -7,7 +7,7 @@ export const collections: {
 
 export const connectDB = async () => {
   const client: mongoDB.MongoClient = new mongoDB.MongoClient(
-    process.env.DB_CONN_STRING
+    process.env.DB_CONN_STRING as string
   );
 
   await client.connect();

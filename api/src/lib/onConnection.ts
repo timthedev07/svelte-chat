@@ -1,4 +1,6 @@
 import { Socket, Server } from "socket.io";
+import { newMessage } from "../mongodb/functions/newMessage";
+import { ChatMessage } from "../mongodb/models/ChatMessage";
 
 const handler = (socket: Socket, ioServer: Server) => {
   console.log("new client");
@@ -6,11 +8,14 @@ const handler = (socket: Socket, ioServer: Server) => {
   // new message handler
   socket.on("message", (message: string) => {
     const messageObj = {
-      from: "Jack",
+      senderAuthId: "abcdefg12345",
       message,
-      time: new Date().toLocaleString(),
-    };
+      timeStamp: new Date().toLocaleString(),
+    } as ChatMessage;
+
     ioServer.emit("message", messageObj);
+
+    newMessage(messageObj);
   });
 };
 

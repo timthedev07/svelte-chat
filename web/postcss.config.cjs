@@ -1,9 +1,6 @@
-import preprocess from "svelte-preprocess";
-
-const config = {
-  preprocess: [
-    preprocess({
-      postcss: true,
-    }),
-  ],
+module.exports = {
+  plugins: {
+    tailwindcss: {},
+    autoprefixer: {},
+  },
 };
